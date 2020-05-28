@@ -167,6 +167,8 @@ async def run(
     :rtype subprocess.CompletedProcess
     """
     def stdout_callback(line):
+        if line.endswith(b'\r\n'):
+            line = line[:-2] + b'\n'
         context.put_event_into_queue(StdoutLine(line))
 
     def stderr_callback(line):
